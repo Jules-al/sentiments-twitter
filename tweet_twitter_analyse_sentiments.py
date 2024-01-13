@@ -7,7 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1wQQBnanbDjmXF_ITZ1NCS7L-P1lgoGil
 """
 
-# Commented out IPython magic to ensure Python compatibility.
+# importation des librairies
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -18,13 +18,13 @@ import nltk
 import warnings
 # %matplotlib inline
 
-#@title Default title text
+#Lecture des données 
 df = pd.read_csv('Twitter Sentiments.csv')
 df.head()
 
 df.info()
 
-#removes pattern in the input text
+#Suppression d'un modèle de texte au sein du tweet
 def remove_pattern(input_txt, pattern):
   r= re.findall(pattern, input_txt)
   for word in r: 
@@ -33,23 +33,23 @@ def remove_pattern(input_txt, pattern):
 
 df.head()
 
-#remove twitter handles (@user)
+#suppression des nom d'utilisateur 
 df['clean_tweet']= np.vectorize(remove_pattern)(df['tweet'], "@[\w]*")
 df.head()
 
-#remove special characters, numbers and punctuations
+#Suppression des caractères spéciaux, nombres et ponctuations
 df['clean_tweet'] = df['clean_tweet'].str.replace("[^a-zA-Z#]", " ")
 df.head()
 
-#remove short words 
+#Suppression des mots courts 
 df['clean_tweet']= df['clean_tweet'].apply(lambda x: " ".join([w for w in x.split() if len(w)>3]))
 df.head()
 
-# individual words considered as tokens 
+# iles Mots sont considérés comme des jetons
 tokenized_tweet = df['clean_tweet'].apply(lambda x:x.split())
 tokenized_tweet.head()
 
-# stem the words
+#radical des mots
 from nltk.stem.porter import PorterStemmer
 stemmer = PorterStemmer()
 
@@ -65,7 +65,7 @@ df.head()
 !pip install wordcloud
 
 import wordcloud
-#visualize the frequent words
+#VIsualisation des mots frequents
 all_words="".join([sentence for sentence in df['clean_tweet']])
 from wordcloud import WordCloud
 wordcloud=WordCloud(width=800, height=500, random_state=42, max_font_size=100).generate(all_words)
@@ -157,7 +157,7 @@ f1_score(y_test, pred)
 
 accuracy_score(y_test,pred)
 
-# use probability to get output
+# utilisation des probabilités pour la sortie 
 pred_prob = model.predict_proba(x_test)
 pred = pred_prob[:, 1] >= 0.3
 pred = pred.astype(np.int)
