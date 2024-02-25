@@ -138,11 +138,11 @@ bow = bow_vectorizer.fit_transform(df['clean_tweet'])
 
 from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(bow, df['label'], random_state=42, test_size=0.25)
-
+#
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score, accuracy_score
 # training
-model = LogisticRegression()
+model = LogisticRegression() # modèle d'entrainement 
 model.fit(x_train, y_train)
 # testing
 pred = model.predict(x_test)
